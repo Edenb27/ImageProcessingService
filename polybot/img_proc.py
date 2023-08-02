@@ -7,6 +7,7 @@ def rgb2gray(rgb):
     gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
     return gray
 
+
 class Img:
 
     def __init__(self, path):
@@ -77,17 +78,9 @@ class Img:
         img_len = len(self.data[0])
         img_hei = len(self.data)
 
-        new_image_data = []
-
-        for i in range(img_len):
-
-            for j in range(img_hei):
-                a = self.data[i][j]
-                if a > 100:
+        for i in range(img_hei):
+            for j in range(img_len):
+                if self.data[i][j] > 100:
                     self.data[i][j] = 255
-
                 else:
-                    self.data[i] = 0
-
-        self.data = new_image_data
-
+                    self.data[i][j] = 0

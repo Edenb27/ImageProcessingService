@@ -3,7 +3,7 @@ from loguru import logger
 import os
 import time
 from telebot.types import InputFile
-from polybot.img_proc import Img
+from ImageProcessingService.polybot.img_proc import Img
 
 
 class Bot:
@@ -34,6 +34,7 @@ class Bot:
     def download_user_photo(self, msg):
         """
         Downloads the photos that sent to the Bot to `photos` directory (should be existed)
+        :param msg:
         :param quality: integer representing the file quality. Allowed values are [0, 1, 2]
         :return:
         """
@@ -71,9 +72,17 @@ class QuoteBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
 
-        if msg["text"] != 'Please don\'t quote me':
+        if 'text' in msg and msg["text"] != 'Please don\'t quote me':
             self.send_text_with_quote(msg['chat']['id'], msg["text"], quoted_msg_id=msg["message_id"])
 
 
 class ImageProcessingBot(Bot):
-    pass
+    def handle_message(self, msg):
+        try:
+            img_path = self.download_user_photo(msg)
+            new_img = Img(img_path)
+            new_img.rotate()
+            new_path = new_img.save_img()
+            self.send_photo(msg['chat']['id'], new_path)
+        except:
+            print("try again")
