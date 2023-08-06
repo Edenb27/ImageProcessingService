@@ -78,11 +78,37 @@ class QuoteBot(Bot):
 
 class ImageProcessingBot(Bot):
     def handle_message(self, msg):
-        try:
-            img_path = self.download_user_photo(msg)
-            new_img = Img(img_path)
-            new_img.rotate()
-            new_path = new_img.save_img()
-            self.send_photo(msg['chat']['id'], new_path)
-        except:
-            print("try again")
+            if msg.get('text'):
+                hello = f'\nHello and welcome to Eden ImageBot Filter\n' \
+                        f'\n Please send image to filter'
+                self.send_text(msg['chat']['id'], hello)
+            try:
+                if msg.get('photo'):
+                    if msg.get("caption") == 'rotate':
+                        img_path = self.download_user_photo(msg)
+                        new_img = Img(img_path)
+                        new_img.rotate()
+                        new_path = new_img.save_img()
+                        self.send_photo(msg['chat']['id'], new_path)
+                    elif msg.get("caption") == 'segment':
+                         img_path = self.download_user_photo(msg)
+                         new_img = Img(img_path)
+                         new_img.segment()
+                         new_path = new_img.save_img()
+                         self.send_photo(msg['chat']['id'], new_path)
+                    elif msg.get("caption") == 'blur':
+                        img_path = self.download_user_photo(msg)
+                        new_img = Img(img_path)
+                        new_img.blur()
+                        new_path = new_img.save_img()
+                        self.send_photo(msg['chat']['id'], new_path)
+                    elif msg.get("caption") == 'contour':
+                        img_path = self.download_user_photo(msg)
+                        new_img = Img(img_path)
+                        new_img.contour()
+                        new_path = new_img.save_img()
+                        self.send_photo(msg['chat']['id'], new_path)
+                    else:
+                        raise TypeError('This Bot can get only this filters - rotate, contour, segment, blur')
+            except TypeError as error:
+                    self.send_text(msg['chat']['id'], error)
