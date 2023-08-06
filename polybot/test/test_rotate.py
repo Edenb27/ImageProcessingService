@@ -1,5 +1,5 @@
 import unittest
-from ImageProcessingService.polybot.img_proc import Img
+from polybot.img_proc import Img
 import os
 
 img_path = 'polybot/test/beatles.jpeg' if '/polybot/test' not in os.getcwd() else 'beatles.jpeg'
