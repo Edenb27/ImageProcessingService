@@ -102,13 +102,13 @@ class ImageProcessingBot(Bot):
                         new_img.blur()
                         new_path = new_img.save_img()
                         self.send_photo(msg['chat']['id'], new_path)
-                    elif msg.get("caption") == 'contour':
+                    elif msg.get("caption") == 'Contour':
                         img_path = self.download_user_photo(msg)
                         new_img = Img(img_path)
                         new_img.contour()
                         new_path = new_img.save_img()
                         self.send_photo(msg['chat']['id'], new_path)
                     else:
-                        raise TypeError('This Bot can get only this filters - rotate, contour, segment, blur')
+                        raise TypeError('This Bot can get only this filters - rotate, Contour, segment, blur')
             except TypeError as error:
                     self.send_text(msg['chat']['id'], error)
